@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Pdam.Customer.Service
 {
@@ -18,6 +19,13 @@ namespace Pdam.Customer.Service
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseSerilog((context, config) =>
+                    {
+                        config.ReadFrom.Configuration(context.Configuration);
+                    });
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

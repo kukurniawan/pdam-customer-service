@@ -22,9 +22,10 @@
       "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://0.0.0.0:6002",
+        "PdamCustomerConnectionString": "server=localhost;port=55432;database=pdam_customer;user id=postgres;password=getdown"
       }
     }
   }
