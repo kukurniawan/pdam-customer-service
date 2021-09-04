@@ -12,6 +12,7 @@ namespace Pdam.Customer.Service.DataContext
         public Guid CustomerId { get; set; }
         public ActiveState Status { get; set; }
         public string StatusDescription { get; set; }
+        public string AssetTypeCode { get; set; }
         public string SerialNumber { get; set; }
         public string AssetDescription { get; set; }
         public DateTime? DateOfInstallation { get; set; }

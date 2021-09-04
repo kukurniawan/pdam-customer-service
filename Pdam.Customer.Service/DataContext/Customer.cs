@@ -17,7 +17,7 @@ namespace Pdam.Customer.Service.DataContext
         public string CustomerCode { get; set; }
         public string CustomerGroupCode { get; set; }
         public ActiveState Status { get; set; } 
-        public Guid RouterId { get; set; }
+        public Guid? RouterId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
