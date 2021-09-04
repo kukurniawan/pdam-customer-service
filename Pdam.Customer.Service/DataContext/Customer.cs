@@ -27,5 +27,6 @@ namespace Pdam.Customer.Service.DataContext
         public IEnumerable<CustomerStatusLog> CustomerStatusLogs { get; set; }
         
         public Router Router { get; set; }
+        public IEnumerable<CustomerAsset> CustomerAssets { get; set; }
     }
 }

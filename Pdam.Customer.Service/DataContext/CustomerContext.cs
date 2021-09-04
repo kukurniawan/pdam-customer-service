@@ -22,7 +22,7 @@ namespace Pdam.Customer.Service.DataContext
         public DbSet<CustomerAddress> CustomerAddress { get; set; }
         public DbSet<CustomerContact> CustomerContacts { get; set; }
         public DbSet<CustomerStatusLog> CustomerStatusLogs { get; set; }
-        
+        public DbSet<CustomerAsset> CustomerAssets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(x =>
@@ -50,6 +50,11 @@ namespace Pdam.Customer.Service.DataContext
                 x.HasOne(c => c.Router)
                     .WithMany(b => b.Customers)
                     .HasForeignKey(c => c.RouterId));
+            
+            modelBuilder.Entity<CustomerAsset>(x =>
+                x.HasOne(c => c.Customer)
+                    .WithMany(b => b.CustomerAssets)
+                    .HasForeignKey(c => c.CustomerId));
         }
     }
 }
