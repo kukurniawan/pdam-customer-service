@@ -26,7 +26,7 @@ namespace Pdam.Customer.Service.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(x =>
-                x.HasIndex(x => new{ x.CompanyCode, x.CustomerCode}).IsUnique());
+                x.HasIndex(customer => new{ customer.CompanyCode, customer.CustomerCode}).IsUnique());
             
             modelBuilder.Entity<CustomerAddress>(x =>
                 x.HasOne(c => c.Customer)
@@ -44,7 +44,7 @@ namespace Pdam.Customer.Service.DataContext
                     .HasForeignKey(c => c.CustomerId));
             
             modelBuilder.Entity<Router>(x =>
-                x.HasIndex(x => new{ x.CompanyCode, x.RouteCode}).IsUnique());
+                x.HasIndex(router => new{ router.CompanyCode, router.RouteCode}).IsUnique());
             
             modelBuilder.Entity<Customer>(x =>
                 x.HasOne(c => c.Router)

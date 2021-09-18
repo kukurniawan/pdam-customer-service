@@ -23,7 +23,7 @@ namespace Pdam.Customer.Service.DataContext
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
-        public System.DateTime? ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
         public Customer Customer { get; set; }
     }
 }
