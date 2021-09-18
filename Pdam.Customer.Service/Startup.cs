@@ -1,13 +1,16 @@
 using System;
+using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Pdam.Common.Shared.Fault;
 using Pdam.Common.Shared.Helper;
@@ -35,6 +38,12 @@ namespace Pdam.Customer.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
+                .AddOData(options => options
+                        .Select().Filter().Count().OrderBy().Expand().EnableQueryFeatures()
+                        .SetMaxTop(1000) // enable usage of $top
+                        .AddRouteComponents("query", GetEdmModel()) // enable OData routing
+                )
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddDateTimeFormat();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IApiLogger, ApiLogger>();
@@ -49,11 +58,13 @@ namespace Pdam.Customer.Service
                 .WithScopedLifetime()
             );
             
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(typeof(Features.Customers.Handler));
+            services.AddAutoMapper(typeof(CustomerProfile));
             services.AddSwaggerGen(c =>
             {
                 c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pdam.Customer.Service", Version = "v1"});
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
             services.AddHealthChecks()
                 .AddNpgSql(Environment.GetEnvironmentVariable("PdamCustomerConnectionString"));
@@ -68,10 +79,11 @@ namespace Pdam.Customer.Service
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pdam.Customer.Service v1"));
+                app.SetupInitData();
             }
             app.UseMiddleware<FailureMiddleware>();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -91,6 +103,18 @@ namespace Pdam.Customer.Service
                     setup.ApiPath = "/health-json";  
                 });*/
             });
+        }
+
+        private static IEdmModel GetEdmModel()
+        {
+            var modelBuilder = new ODataConventionModelBuilder();
+            modelBuilder.EntitySet<DataContext.Customer>("Customer"); // must match BooksController
+            modelBuilder.EntitySet<CustomerAddress>("Address"); 
+            modelBuilder.EntitySet<CustomerAsset>("Asset"); 
+            modelBuilder.EntitySet<CustomerContact>("Contact"); 
+            modelBuilder.EntitySet<CustomerStatusLog>("StatusLog"); 
+            
+            return modelBuilder.GetEdmModel();
         }
     }
 }
