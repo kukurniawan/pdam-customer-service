@@ -30,7 +30,6 @@ namespace Pdam.Customer.Service.Controllers
             return Ok( _context.Customers.Where(x=>x.CompanyCode == companyCode));
         }
         
-        //[HttpGet("/{companyCode}/{key}")]
         [EnableQuery]
         [HttpGet]
         public SingleResult<DataContext.Customer> Get(Guid key) 
