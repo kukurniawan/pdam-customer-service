@@ -64,7 +64,6 @@ namespace Pdam.Customer.Service
             {
                 c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Pdam.Customer.Service", Version = "v1"});
-                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
             services.AddHealthChecks()
                 .AddNpgSql(Environment.GetEnvironmentVariable("PdamCustomerConnectionString"));
