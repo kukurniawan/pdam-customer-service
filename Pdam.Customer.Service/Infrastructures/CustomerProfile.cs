@@ -17,6 +17,12 @@ namespace Pdam.Customer.Service.Infrastructures
                 .Include<Features.Address.UpdateRequest, DataContext.CustomerAddress>();
             CreateMap<Features.Address.CreateRequest, DataContext.CustomerAddress>();
             CreateMap<Features.Address.UpdateRequest, DataContext.CustomerAddress>();  
+            
+            CreateMap<Features.Contacts.Request, DataContext.CustomerContact>()
+                .Include<Features.Contacts.CreateRequest, DataContext.CustomerContact>()
+                .Include<Features.Contacts.UpdateRequest, DataContext.CustomerContact>();
+            CreateMap<Features.Contacts.CreateRequest, DataContext.CustomerContact>();
+            CreateMap<Features.Contacts.UpdateRequest, DataContext.CustomerContact>();
         }
     }
 }
