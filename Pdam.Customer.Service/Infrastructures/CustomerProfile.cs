@@ -23,6 +23,12 @@ namespace Pdam.Customer.Service.Infrastructures
                 .Include<Features.Contacts.UpdateRequest, DataContext.CustomerContact>();
             CreateMap<Features.Contacts.CreateRequest, DataContext.CustomerContact>();
             CreateMap<Features.Contacts.UpdateRequest, DataContext.CustomerContact>();
+            
+            CreateMap<Features.Assets.Request, DataContext.CustomerAsset>()
+                .Include<Features.Assets.CreateRequest, DataContext.CustomerAsset>()
+                .Include<Features.Assets.UpdateRequest, DataContext.CustomerAsset>();
+            CreateMap<Features.Assets.CreateRequest, DataContext.CustomerAsset>();
+            CreateMap<Features.Assets.UpdateRequest, DataContext.CustomerAsset>();
         }
     }
 }
